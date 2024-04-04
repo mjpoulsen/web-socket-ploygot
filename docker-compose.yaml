@@ -1,0 +1,50 @@
+version: "3"
+
+services:
+  express-ws-backend:
+    build:
+      context: express
+    container_name: express-ws-backend
+    working_dir: /usr/src/app
+    networks:
+      - ws-polygot-network
+    volumes:
+      - ./express:/usr/src/app
+      - ./express/node_modules:/usr/src/app/node_modules
+    tty: true
+    ports:
+      - "3000:3000"
+    command: npm run start
+
+  react-ws-frontend:
+    build:
+      context: react
+    container_name: react-ws-frontend
+    working_dir: /usr/src/app
+    networks:
+      - ws-polygot-network
+    volumes:
+      - ./react:/usr/src/app
+      - /usr/src/app/node_modules
+    tty: true
+    ports:
+      - "5173:5173"
+    command: npm run preview
+
+  nginx-ws-proxy:
+    build:
+      context: nginx
+    container_name: nginx-ws-proxy
+    restart: always
+    tty: true
+    ports:
+      - "8000:80"
+    networks:
+      - ws-polygot-network
+    depends_on:
+      - express-ws-backend
+      - react-ws-frontend
+
+networks:
+  ws-polygot-network:
+    driver: bridge
