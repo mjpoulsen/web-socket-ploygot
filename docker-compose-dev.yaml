@@ -4,7 +4,7 @@ services:
   express-ws-backend:
     build:
       context: express
-    container_name: express-ws-backend
+    container_name: ws-backend
     working_dir: /usr/src/app
     networks:
       - ws-polygot-network
@@ -15,6 +15,8 @@ services:
     ports:
       - "3000:3000"
     command: npm run dev
+    profiles:
+      - express
 
   react-ws-frontend:
     build:
@@ -42,7 +44,6 @@ services:
     networks:
       - ws-polygot-network
     depends_on:
-      - express-ws-backend
       - react-ws-frontend
 
 networks:
