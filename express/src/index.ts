@@ -46,14 +46,14 @@ io.on("connection", (socket) => {
 
   console.log(`${socket.id} connected`);
 
-  socket.on("send message", (data) => {
-    socket.broadcast.emit("new message", {
+  socket.on("sendMessage", (data) => {
+    socket.broadcast.emit("newMessage", {
       user: data.user,
       message: data.message,
     });
   });
 
-  socket.on("add user", (username) => {
+  socket.on("addUser", (username) => {
     if (addedUser) return;
 
     (socket as any).username = username;
@@ -65,7 +65,7 @@ io.on("connection", (socket) => {
       numUsers: numUsers,
     });
 
-    socket.broadcast.emit("user joined", {
+    socket.broadcast.emit("userJoined", {
       user: (socket as any).username,
       numUsers: numUsers,
     });
@@ -75,18 +75,18 @@ io.on("connection", (socket) => {
     if (addedUser) {
       --numUsers;
 
-      socket.broadcast.emit("user left", {
+      socket.broadcast.emit("userLeft", {
         username: (socket as any).username,
         numUsers: numUsers,
       });
     }
   });
 
-  socket.on("log out", () => {
+  socket.on("logOut", () => {
     if (addedUser) {
       --numUsers;
 
-      socket.broadcast.emit("user left", {
+      socket.broadcast.emit("userLeft", {
         username: (socket as any).username,
         numUsers: numUsers,
       });
