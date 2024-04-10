@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ChatPage from "./components/ChatPage";
 import { useEffect, useState } from "react";
-import { socket } from "./util/socket";
+import { socketIoClient } from "./util/socket";
 import MessageType from "./types/MessageType";
 
 type EmittedChatMessage = {
@@ -11,7 +11,7 @@ type EmittedChatMessage = {
 };
 
 export default function App() {
-  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [isConnected, setIsConnected] = useState(socketIoClient.connected);
   const [messages, setMessages] = useState<MessageType[]>([]);
 
   useEffect(() => {
@@ -27,23 +27,23 @@ export default function App() {
       setMessages((messages) => [...messages, data]);
     }
 
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-    socket.on("new message", onMessages);
+    socketIoClient.on("connect", onConnect);
+    socketIoClient.on("disconnect", onDisconnect);
+    socketIoClient.on("newMessage", onMessages);
 
     return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-      socket.off("new message", onMessages);
+      socketIoClient.off("connect", onConnect);
+      socketIoClient.off("disconnect", onDisconnect);
+      socketIoClient.off("newMessage", onMessages);
     };
   }, [messages]);
 
   const addUser = (username: string) => {
-    socket.emit("add user", username);
+    socketIoClient.emit("addUser", username);
   };
 
   const logOut = (username: string) => {
-    socket.emit("log out", username);
+    socketIoClient.emit("logOut", username);
     setMessages([]);
   };
 
@@ -55,7 +55,7 @@ export default function App() {
             index
             element={
               <ChatPage
-                socket={socket}
+                socket={socketIoClient}
                 isConnected={isConnected}
                 messagesState={messages}
                 setMessages={setMessages}

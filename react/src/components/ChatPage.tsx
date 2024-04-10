@@ -26,7 +26,7 @@ const ChatPage = ({
 
   const onSubmit = (message: string) => {
     const data = { user, message };
-    socket.emit("send message", data);
+    socket.emit("sendMessage", data);
 
     // Because the server broadcast the message, the sender does not receive the message.
     // This could be a feature for only Socket.io...
