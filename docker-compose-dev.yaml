@@ -18,6 +18,23 @@ services:
     profiles:
       - express
 
+  spring-ws-backend:
+    build:
+      context: spring
+    container_name: ws-backend
+    working_dir: /usr/src/app
+    networks:
+      - ws-polygot-network
+    volumes:
+      # - ./spring:/usr/src/app
+      - ./spring/build/libs:/usr/src/app
+    tty: true
+    ports:
+      - "3000:3000"
+    command: java -jar messaging-stomp-websocket-0.0.1-SNAPSHOT.jar
+    profiles:
+      - spring
+
   react-ws-frontend:
     build:
       context: react
