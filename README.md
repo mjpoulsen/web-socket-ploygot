@@ -27,3 +27,10 @@ docker-compose -f docker-compose-dev.yaml --profile PROFILE up --build
 docker-compose build
 docker-compose --profile PROFILE up -d
 ```
+
+## Todo
+
+- Remove socket.io as it does not work with other implementations
+- Implement an actual websocket server without express js `ws` using this [guide](https://www.pubnub.com/blog/nodejs-websocket-programming-examples/)
+- Remove socket.io client from React and use the same guide above
+- Verify the new websocket implementation can work with Spring
