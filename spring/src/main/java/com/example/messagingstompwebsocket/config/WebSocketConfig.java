@@ -13,13 +13,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void configureMessageBroker(@NonNull MessageBrokerRegistry config) {
-    config.enableSimpleBroker("/topic");
-    config.setApplicationDestinationPrefixes("/app");
+    config.enableSimpleBroker("/"); // prefix for events to broadcast to
+    config.setApplicationDestinationPrefixes("/"); // prefix for events to listen for
   }
 
   @Override
   public void registerStompEndpoints(@NonNull StompEndpointRegistry registry) {
-    registry.addEndpoint("/gs-guide-websocket");
+    registry.addEndpoint("/chat");
   }
 
 }
